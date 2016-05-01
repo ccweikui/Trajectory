@@ -3,14 +3,19 @@
 """
 	此方法主要统计每个经纬度基站位置上的统计信息
 	每个位置可能包含多个基站
+	输出按照从多到少顺序输出
 """
+import sys
+sys.path.append("../")
+from config import *
+
 if __name__ == "__main__":
-	#数据集中总用户数量
-	USERNUMBER = 474080
+	users = set()
 	locations = {}
 	station_location = {}
-	writer = open('output/result_location',"w")
-	for index,text in enumerate(open("../data/weibiao.txt").readlines()):
+	writer = open(LOCATION_STAT,"w")
+	# 处理基站的地址
+	for index,text in enumerate(open(WEIBIAO_FILE).readlines()):
 		if index == 0:
 			continue
 		datas = text.split()
@@ -21,23 +26,26 @@ if __name__ == "__main__":
 		latitude = datas[4]
 		if (not (longitude,latitude) in locations):
 			locations[(longitude,latitude)] = {}
-		locations[(longitude,latitude)][(lac,ci)] = {}
-		locations[(longitude,latitude)][(lac,ci)]['name'] = name
-		locations[(longitude,latitude)][(lac,ci)]['usercount'] = 0
+			locations[(longitude,latitude)]['station'] = 0
+			locations[(longitude,latitude)]['user'] = set()
+		locations[(longitude,latitude)]['station'] += 1
 		station_location[(lac,ci)] = (longitude,latitude)
-	for text in open("output/result").readlines():
-		datas = text.split()
-		lac = datas[0]
-		ci = datas[1]
-		usercount = int(datas[2])
-		locations[station_location[(lac,ci)]][(lac,ci)]['usercount'] = usercount
-	for location in locations:
-		print location,locations[location]
+	for text in open(ORIGIN_FILE).readlines():
+	#for text in open("../data/testfile").readlines():
+		datas = text.split(",")
+		date = datas[0]
+		userid = datas[1]
+		lac = datas[3]
+		ci = datas[4]
+		longitude, latitude = station_location[(lac, ci)]
+		locations[(longitude,latitude)]['user'].add(userid)
+		users.add(userid)
+	sortedLocations = sorted(locations.items(),key = lambda d:len(d[1]['user']),reverse = True)
 	
 	writer.write("经度\t纬度\t基站数目\t包含用户\t占总人数百分比\n")
-	sortedlocations = sorted(locations.items(),key = lambda d:sum([ int(d[1][x]['usercount']) for x in d[1] ]),reverse = True)
-	for location in sortedlocations:
-		usercountTotal = sum([location[1][x]['usercount'] for x in location[1]])
-		writer.write("%s\t%s\t%d\t%d\t%.4f\n" % (location[0][0],location[0][1],len(location[1]),usercountTotal,usercountTotal*1.0/USERNUMBER))
-		print "%s\t%s\t%d\t%d\t%.4f\n" % (location[0][0],location[0][1],len(location[1]),usercountTotal,usercountTotal*1.0/USERNUMBER)
+	userNumber = len(users)
+	print "用户总数:%d" % userNumber
+	for location in sortedLocations:
+		writer.write("%s\t%s\t%d\t%d\t%.4f\n" % (location[0][0],location[0][1],location[1]['station'], len(location[1]['user']), len(location[1]['user']) * 1.0 / userNumber))
+		#print "%s\t%s\t%d\t%d\t%.4f\n" % (location[0][0],location[0][1],location[1]['station'], len(location[1]['user']), len(location[1]['user']) * 1.0 / userNumber)
 	writer.close()
