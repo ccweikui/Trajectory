@@ -10,12 +10,21 @@ class BaiduToGoogle:
 	"""
 	def __init__(self):
 		self.stations = {}
+		self.uniq_station = []
 
 	def getHouseList(self):
 		writer = open("weibiao_new.txt","w")
 		for index, text in enumerate(open("weibiao.txt")):
 			if index == 0:
 				continue
+			records = text.split()
+			longitude = records[3]
+			latitude = records[4]
+			if (longitude, latitude) not in self.stations:
+				self.stations[(longitude,latitude)] = {}
+				self.uniq_station.append(text)
+
+		for text in self.uniq_station:
 			records = text.split()
 			longitude = records[3]
 			latitude = records[4]
