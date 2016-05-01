@@ -29,8 +29,9 @@ if __name__ == "__main__":
 		longitude = datas[0]
 		latitude = datas[1]
 		location_labels[(longitude, latitude)] = labels[index]
-
+		
 	print len(location_labels)
+
 	for index,text in enumerate(open(WEIBIAO_FILE).readlines()):
 		if index == 0:
 			continue

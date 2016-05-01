@@ -17,7 +17,7 @@ LABEL_FILE = BASE_DIR + "data/label.txt"
 # 站点分布统计的输出文件
 LOCATION_STAT = BASE_DIR + "output/location_stat.txt"
 # 经纬度按照名称聚类后的文件
-LOCATION_CLUSTER = BASE_DIR + "output/location_cluster.txt"
+LOCATION_CLUSTER = BASE_DIR + "data/location_cluster.txt"
 # 将站点按相应的label转换之后的输出文件
 LOCATION_LABEL = BASE_DIR + "output/location_label.txt"
 # 将打过label之后的轨迹数据按用户进行合并并去重之后输出的文件
