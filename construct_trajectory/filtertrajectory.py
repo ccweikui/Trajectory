@@ -7,8 +7,8 @@ import sys
 sys.path.append("../")
 from config import *
 
-MIN_RATIO = 0.4
-MIN_LENGTH = 10
+MIN_RATIO = 0.2
+MIN_LENGTH = 5
 
 def getStringLen(text):
 	charNum = {}

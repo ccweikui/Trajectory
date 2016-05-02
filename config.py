@@ -10,7 +10,7 @@ BASE_DIR = "/Users/weikui/File/source/pyFile/Trajectory/TrajectoryPython/"
 ORIGIN_FILE = BASE_DIR + "data/cdr_ler_20100916.TXT"
 # 原始的坐标文件
 WEIBIAO_FILE = BASE_DIR + "data/weibiao.txt"
-# 原始的坐标文件
+# 修改之后的坐标文件
 WEIBIAO_FILE_NEW = BASE_DIR + "data/weibiao_new.txt"
 # 原始的Label文件
 LABEL_FILE = BASE_DIR + "data/label.txt"

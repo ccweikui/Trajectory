@@ -17,19 +17,30 @@ if __name__ == "__main__":
 	location_labels = {}
 	# 每个基站的标记
 	station_labels = {}
-	
 	index = -1
+	gps_maps = {}
+
+	for text in open(WEIBIAO_FILE_NEW).readlines():
+		datas = text.split()
+		longitude = datas[3]
+		latitude = datas[4]
+		glongitude = datas[5]
+		glatitude = datas[6]
+		gps_maps[(glongitude,glatitude)] = (longitude, latitude)
+
 	for text in open(LOCATION_CLUSTER).readlines():
 		if "聚类" in text:
 			index += 1;
 			continue
 		datas = text.split()
-		if len(datas) != 2:
+		if len(datas) != 3:
 			continue
-		longitude = datas[0]
-		latitude = datas[1]
-		location_labels[(longitude, latitude)] = labels[index]
-		
+		glongitude = datas[0]
+		glatitude = datas[1]
+		location_labels[gps_maps[(glongitude, glatitude)]] = labels[index]
+		print labels[index]
+
+	print index
 	print len(location_labels)
 
 	for index,text in enumerate(open(WEIBIAO_FILE).readlines()):
